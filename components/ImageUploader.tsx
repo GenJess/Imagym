@@ -27,17 +27,14 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, isL
 
     // The 'files' property is the most straightforward
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      // FIX: Explicitly type `f` to resolve TypeScript inference errors on `e.dataTransfer.files`.
-      // FIX: Cast `f` to `any` to avoid type errors when `FileList` item type is not inferred correctly.
-      file = Array.from(e.dataTransfer.files).find((f: any) => f.type.startsWith('image/')) || null;
+      const files = Array.from(e.dataTransfer.files) as File[];
+      file = files.find((f) => f.type.startsWith('image/')) || null;
     } 
     // Fallback to 'items' for other cases (like dragging from another browser tab)
     else if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-      // FIX: Explicitly type `item` to resolve TypeScript inference errors on `e.dataTransfer.items`.
-      // FIX: Cast `item` to `any` to resolve type inference issues where `item` is `unknown`.
-      const imageItem = Array.from(e.dataTransfer.items).find((item: any) => item.kind === 'file' && item.type.startsWith('image/'));
+      const items = Array.from(e.dataTransfer.items) as DataTransferItem[];
+      const imageItem = items.find((item) => item.kind === 'file' && item.type.startsWith('image/'));
       if (imageItem) {
-        // FIX: Calling getAsFile() is correct, the error was due to `imageItem` being of an unknown type.
         file = imageItem.getAsFile();
       }
     }

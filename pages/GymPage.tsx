@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { HomeIcon } from '../components/icons/HomeIcon';
 import { DifficultySelector } from '../components/DifficultySelector';
 import { ImageUploader } from '../components/ImageUploader';
 import { PromptInput } from '../components/PromptInput';
@@ -24,13 +23,13 @@ interface ImageState {
 }
 
 const LoadingOverlay: React.FC<{ message: string }> = ({ message }) => (
-  <div className="absolute inset-0 bg-gray-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+  <div className="absolute inset-0 bg-gray-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-xl">
     <SpinnerIcon className="w-12 h-12 text-indigo-400" />
     <p className="mt-4 text-lg text-gray-300 font-semibold">{message}</p>
   </div>
 );
 
-const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) => {
+const GymPage: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('selection');
   const [loadingMessage, setLoadingMessage] = useState('');
   const [error, setError] = useState('');
@@ -129,12 +128,12 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
     switch (gameState) {
       case 'prompting':
         return (
-          <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center animate-fadeIn">
             <div className="flex flex-col items-center space-y-4">
               <h2 className="text-2xl font-bold text-gray-300">Reference Image</h2>
                {referenceImage && (
                  <GlowCard glowColor="purple" customSize className="w-full max-w-md aspect-square p-2 bg-transparent">
-                  <img src={referenceImage.dataUrl} alt="Reference challenge" className="w-full h-full object-contain rounded-lg"/>
+                  <img src={referenceImage.dataUrl} alt="Reference challenge" className="w-full h-full object-contain rounded-lg bg-black/50"/>
                  </GlowCard>
                )}
             </div>
@@ -159,16 +158,22 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
       case 'selection':
       default:
         return (
-          <div className="w-full flex flex-col items-center space-y-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-100">Prompting Gym</h1>
-            <p className="text-lg text-gray-400">Choose a difficulty or upload your own image to start.</p>
-            {error && <p className="text-red-400 bg-red-900/20 border border-red-500/30 p-3 rounded-lg">{error}</p>}
-            <DifficultySelector onSelect={handleDifficultySelect} isLoading={false} />
-            <div className="flex items-center w-full max-w-2xl">
-              <div className="flex-grow h-px bg-gray-700"></div>
-              <span className="flex-shrink px-6 text-gray-500 font-medium">OR</span>
-              <div className="flex-grow h-px bg-gray-700"></div>
+          <div className="w-full flex flex-col items-center space-y-8 animate-fadeIn">
+            <div className="text-center space-y-2">
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-100">Prompting Gym</h1>
+                <p className="text-lg text-gray-400">Choose a difficulty or upload your own image to start training.</p>
             </div>
+            
+            {error && <p className="text-red-400 bg-red-900/20 border border-red-500/30 p-3 rounded-lg">{error}</p>}
+            
+            <DifficultySelector onSelect={handleDifficultySelect} isLoading={false} />
+            
+            <div className="flex items-center w-full max-w-2xl">
+              <div className="flex-grow h-px bg-gray-800"></div>
+              <span className="flex-shrink px-6 text-gray-600 font-medium font-mono text-sm">OR UPLOAD</span>
+              <div className="flex-grow h-px bg-gray-800"></div>
+            </div>
+            
             <ImageUploader onImageUpload={handleImageUpload} isLoading={false} />
           </div>
         );
@@ -176,21 +181,18 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-200 font-sans flex flex-col relative">
+    <div className="w-full h-full relative">
       {gameState === 'loading' && <LoadingOverlay message={loadingMessage} />}
-      <header className="absolute top-4 left-4 z-10">
-        <button
-          onClick={gameState === 'prompting' || gameState === 'results' ? handleReset : onNavigateHome}
-          className="flex items-center space-x-2 bg-gray-800/50 hover:bg-gray-700/70 backdrop-blur-sm text-sm text-gray-300 font-medium px-4 py-2 rounded-lg transition-colors"
-          aria-label="Go to homepage"
-        >
-          <HomeIcon className="w-5 h-5" />
-          <span>{gameState === 'prompting' || gameState === 'results' ? 'New Challenge' : 'Home'}</span>
-        </button>
-      </header>
-      <main className="container mx-auto px-4 flex-1 flex items-center justify-center py-20">
+      <div className="container mx-auto px-4 py-12 min-h-[calc(100vh-8rem)] flex items-center justify-center">
         {renderContent()}
-      </main>
+      </div>
+       <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+      `}</style>
     </div>
   );
 };

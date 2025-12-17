@@ -415,7 +415,7 @@ function random(base: number | readonly [number, number]): number {
     // FIX: Using direct index access on the tuple to prevent potential type inference issues with destructuring that caused arithmetic errors.
     return Math.random() * (base[1] - base[0]) + base[0];
   }
-  return Math.random() * base;
+  return Math.random() * (base as number);
 }
 
 function pickRandom<T>(arr: T | T[]): T {
@@ -620,7 +620,7 @@ class LightsSticks {
     const options = this.options;
     const geometry = new THREE.PlaneGeometry(1, 1);
     const instanced = new THREE.InstancedBufferGeometry().copy(geometry as any) as THREE.InstancedBufferGeometry;
-    const totalSticks = options.totalSideLightSticks;
+    const totalSticks = Number(options.totalSideLightSticks);
     instanced.instanceCount = totalSticks;
 
     const stickoffset = options.length / (totalSticks - 1);
