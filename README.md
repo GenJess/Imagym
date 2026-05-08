@@ -1,20 +1,5 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+Imagym is a comprehensive web application designed as an interactive environment for mastering prompt engineering with multimodal Large Language Models. Its primary purpose is to provide a structured 'gym' where users can test how different textual prompts influence AI interpretations of uploaded images. By leveraging the Google Gemini API, the platform offers real-time feedback and analysis, allowing users to understand the nuances of AI vision and response generation. The application features multiple modes, including a 'GymPage' for active practice and a 'MirrorPage' for comparative tasks, supported by a 'DifficultySelector' to scale the complexity of the prompting challenges.
 
-# Run and deploy your AI Studio app
+The architecture of Imagym is built as a modern Single Page Application (SPA) using React and TypeScript, ensuring a type-safe and modular codebase. The project is organized into a clean directory structure with a clear separation of concerns: the 'services' layer manages direct communication with the Gemini API, the 'pages' directory handles routing and top-level views, and the 'components' folder contains a mix of functional units like ImageUploader and PromptAnalysis, alongside reusable UI elements. State management and data flow are handled through React hooks, while the UI is enhanced with specialized components such as JsonSyntaxHighlighter for structured data visualization and custom 'Spotlight' cards for a polished aesthetic.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/14Ijdw89NNGuT1nbxw2NNkfwFxyqVuMYy
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Technologically, the project sits on a stack featuring Vite for rapid development and bundling, and Node.js for the runtime environment. Key components include the Gemini Pro Vision capabilities (integrated via geminiService.ts), TypeScript for robust development, and a variety of custom UI enhancements like the 'Hyperspeed' and 'SplashCursor' effects for an immersive user experience. It utilizes environment variables for secure API key management and includes utility functions for complex file handling and image processing. The inclusion of icons, tooltips, and modal systems indicates a focus on high-quality user interface design and accessibility.
